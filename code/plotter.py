@@ -18,9 +18,8 @@ progress_threshold = total_codes / 100
 
 # Set the width of the bars
 bar_width = 1
-
 # Set the height of the bars
-bar_height = 1000
+bar_height = 75000
 
 # Iterate over the RGB codes and plot each as a bar
 for i, rgb_code in enumerate(rgb_codes):
@@ -37,9 +36,14 @@ for i, rgb_code in enumerate(rgb_codes):
     percentage_done = (i + 1) / total_codes * 100
 
     # Check if the progress has changed by the threshold
-    if percentage_done % progress_threshold <= 1.0:
+    while percentage_done <= 99.50:
+        if percentage_done % progress_threshold <= 1.0:
+            # Display the percentage completion
+            print(f"Progress: {(percentage_done*100):.2f}%")
+        
+    if percentage_done > 99.50:
         # Display the percentage completion
-        print(f"Progress: {percentage_done:.2f}%")
+        print(f"Progress: Complete, please wait for image to be generated")
 
 # Remove the axes
 ax.axis('off')
@@ -47,6 +51,17 @@ ax.axis('off')
 # Set the aspect ratio to be equal
 ax.set_aspect("equal")
 
+# Adjust x-axis limits to eliminate whitespace
+ax.set_xlim(-bar_width, total_codes)
+
+# Adjust y-axis limits to crop the plot
+ax.set_ylim(0, bar_height)
+
+# Adjust subplot parameters to eliminate whitespace
+plt.subplots_adjust(0, 0, 1, 1)
+
+# output_filename = "combined_bars.png"
+# plt.savefig(output_filename, dpi=300)
+
 # Display the plot
-plt.tight_layout()
 plt.show()
