@@ -58,7 +58,7 @@ while True: # Loop through each frame of the video
 
 
 
-    
+    # Print updating percentage completion
     sys.stdout.write(f"\r{percentage_done:.2f}% Complete")
     sys.stdout.flush()
 
@@ -90,3 +90,5 @@ with open(file_name, "w") as file:
         file.write(str(color[0]) + "," + str(color[1]) + "," + str(color[2]) + "\n")
 
 print("\nDominant Color Text File Generation Completed.\n")
+
+file.close() # Close file

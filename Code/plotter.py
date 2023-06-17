@@ -1,39 +1,34 @@
 import matplotlib.pyplot as plt
+import re
+import sys
 
-file_name = input("Enter the name of the Dominant Color File (Without the \"_Dominant_Colors.txt\"): ")
+file_name = input("\nEnter the name of the Dominant Color File (Without the \"_Dominant_Colors.txt\"): ")
 movie_name = input("Enter the name of the movie: ")
 
-# Use RegEx to get rid of any punctuation in movie_name
-movie_name = re.sub(r'[^\w\s]', '', movie_name)
+movie_name = re.sub(r'[^\w\s]', '', movie_name) # Use RegEx to get rid of any punctuation in movie_name
 
-# Use RegEx to replace spaces with underscores in movie_name
-movie_name = re.sub(' ', '_', movie_name).lower()
+movie_name = re.sub(' ', '_', movie_name).lower() # Use RegEx to replace spaces with underscores in movie_name
 
 output_filename = movie_name + ".png"
 
-print(f"Look for \"{output_filename}\" in the Output folder")
+print(f"\nLook for \"{output_filename}\" in the Output folder")
 
-# Path to the text file
-file_path = "../Dominant_Color_Files/" + file_name + "_Dominant_Colors.txt"
+file_path = "../Dominant_Color_Files/" + file_name + "_Dominant_Colors.txt" # Create path to the text file
 print(file_path)
 
 # Read the RGB codes from the text file
 with open(file_path, "r") as file:
     rgb_codes = file.read().splitlines()
 
-# Create a figure and axis
-fig, ax = plt.subplots()
+fig, ax = plt.subplots() # Create a figure and axis
 
-# Get the total number of RGB codes
-total_codes = len(rgb_codes)
+total_codes = len(rgb_codes) # Get the total number of RGB codes
 
-# Calculate the threshold to print progress
-progress_threshold = total_codes / 100
+bar_width = 1 # Set the width of the bars
 
-# Set the width of the bars
-bar_width = 1
-# Set the height of the bars
-bar_height = 75000
+bar_height = 75000 # Set the height of the bars
+
+print("\n")
 
 # Iterate over the RGB codes and plot each as a bar
 for i, rgb_code in enumerate(rgb_codes):
@@ -49,34 +44,26 @@ for i, rgb_code in enumerate(rgb_codes):
     # Calculate the percentage completion
     percentage_done = (i + 1) / total_codes * 100
 
-    # Check if the progress has changed by the threshold
-
-    if percentage_done % progress_threshold <= 1.0:
-        # Display the percentage completion
-        print(f"Progress: {(percentage_done*100):.2f}%")
+    # Print updating percentage completion
+    sys.stdout.write(f"\r{percentage_done:.2f}% Complete")
+    sys.stdout.flush()
         
 
-# Remove the axes
-ax.axis('off')
+ax.axis('off') # Remove the axes
 
-# Set the aspect ratio to be equal
-ax.set_aspect("equal")
+ax.set_aspect("equal") # Set the aspect ratio to be equal
 
-# Adjust x-axis limits to eliminate whitespace
-ax.set_xlim(-bar_width, total_codes)
+ax.set_xlim(-bar_width, total_codes) # Adjust x-axis limits to eliminate whitespace
 
-# Adjust y-axis limits to crop the plot
-ax.set_ylim(0, bar_height)
+ax.set_ylim(0, bar_height) # Adjust y-axis limits to crop the plot
 
-# Adjust subplot parameters to eliminate whitespace
-plt.subplots_adjust(0, 0, 1, 1)
+plt.subplots_adjust(0, 0, 1, 1) # Adjust subplot parameters to eliminate whitespace
 
-# Save the plot to a file
 # Write the file to the output folder
+output_location = "../Image_Output/" + output_filename
+plt.savefig(output_location, dpi=300) # Save the plot to a file
 
-output_location = "../Output/" + output_filename
+plt.show() # Display the plot
 
-plt.savefig(output_location, dpi=300)
-
-# Display the plot
-plt.show()
+file.close() # Close file
+print("\nCheck \"Image_Output\" folder")
