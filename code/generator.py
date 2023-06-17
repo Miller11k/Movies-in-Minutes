@@ -1,67 +1,68 @@
 import cv2
 import numpy as np
+import re
+import sys
 
-# Path to the video file
-video_path = "/Users/miller/Python Movie Frame Project/James Bond Quantum of Solace.mp4"
 
-# Initialize an empty array to store the dominant colors
-dominant_colors = []
 
-# Open the video file
-cap = cv2.VideoCapture(video_path)
+
+movie_name = input("\nEnter the name of the movie (for Dominant_Color.txt file): ") # Get User Input for Name of The Movie
+
+movie_name = re.sub(r'[^\w\s]', '', movie_name) # Use RegEx to get rid of any punctuation in movie_name
+
+movie_name = re.sub(' ', '_', movie_name).lower() # Use RegEx to replace spaces with underscores in movie_name
+
+print(f"File created in Dominant_Color_Files will be named: \"{movie_name}_Dominant_Colors.txt\"")
+
+file_name = "../Dominant_Color_Files/" + movie_name + "_Dominant_Colors.txt" # Create a new file Name which is the movie_name + "_Dominant_Colors.txt"
+
+movie_file = input("\n\nEnter movie file name (Automatically adds \".mp4\"): ") # Get name of the movie file
+print(f"Movie File Name: {movie_file}.mp4\n")
+
+video_path = ("../Movie/" + movie_file + ".mp4") # Path to the video file in the Movie folder
+
+
+dominant_colors = [] # Initialize an empty array to store the dominant colors
+
+cap = cv2.VideoCapture(video_path) # Open the video file
 
 # Check if the video file was successfully opened
 if not cap.isOpened():
     print("Error opening video file")
     exit()
 
-# Get the total number of frames in the video
-total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # Get the total number of frames in the video
 
-# Display the total number of frames
-print(f"Total frames: {total_frames}")
+print(f"Total frames in video: {total_frames}\n") # Display the total number of frames
 
-# Calculate the threshold to print progress
-progress_threshold = total_frames / 10000  # Change by 0.01%
 
-# Loop through each frame of the video
-current_frame = 0
-percentage_done = 0.0
+current_frame = 0 # Initialize Current Frame to 0
+percentage_done = 0.0 # Initialize Percentage to 0%
 
-while True:
+while True: # Loop through each frame of the video
     
-
-    # Calculate the percentage completion
+    ret, frame = cap.read() # Read the current frame
     
-    
-    
-    # Read the current frame
-    ret, frame = cap.read()
-    
-    # Increment the current frame count
-    current_frame += 1
+    current_frame += 1 # Increment the current frame count
     percentage_done = (current_frame / total_frames) * 100
-    print(f"Progress: {percentage_done:.2f}% (Frame: {current_frame}/{total_frames})")
 
     # Break the loop if the video has ended
     if not ret:
         break
 
+    # # FOR TROUBLESHOOTING PURPOSES
+    # # Display every 10000th frame as an image
+    # if current_frame % 10000 == 0:
+    #     cv2.imshow("Frame", frame)
+    #     cv2.waitKey(0)
+
+
+
     
+    sys.stdout.write(f"\r{percentage_done:.2f}% Complete")
+    sys.stdout.flush()
 
-    # # Check if the progress has changed by the threshold
-    # if new_percentage - percentage_done >= progress_threshold:
-    #     # Update the percentage_done variable
-    #     percentage_done = new_percentage
-        
-    #     # Display the percentage completion
-    #     print(f"Progress: {percentage_done:.2f}% (Frame: {current_frame}/{total_frames})")
-
-    # Resize the frame for faster processing (optional)
-    # frame = cv2.resize(frame, None, fx=0.5, fy=0.5)
-
-    # Convert the frame from BGR to RGB color space
-    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # Convert the frame from BGR to RGB color space
 
     # Calculate the dominant color using K-means clustering
     pixels = frame_rgb.reshape(-1, 3)
@@ -73,22 +74,19 @@ while True:
         criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0),
         attempts=10,
         flags=cv2.KMEANS_RANDOM_CENTERS,
-    )
+    ) # Run K-means to find dominant color
 
-    # Get the dominant color (center) of the cluster
-    dominant_color = centers[0].astype(int)
+    dominant_color = centers[0].astype(int) # Get the dominant color (center) of the cluster
+    
+    dominant_colors.append(dominant_color) # Add the dominant color to the array
 
-    # Add the dominant color to the array
-    dominant_colors.append(dominant_color)
+cap.release() # Release the video file
 
-# Release the video file
-cap.release()
+
 
 # Create a new file called Dominant-Colors.txt and write the dominant colors for each frame in a new line
-with open("Dominant-Colors.txt", "w") as file:
+with open(file_name, "w") as file:
     for color in dominant_colors:
         file.write(str(color[0]) + "," + str(color[1]) + "," + str(color[2]) + "\n")
 
-# Print the dominant colors
-for color in dominant_colors:
-    print(color)
+print("\nDominant Color Text File Generation Completed.\n")

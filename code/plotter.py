@@ -1,7 +1,21 @@
 import matplotlib.pyplot as plt
 
+file_name = input("Enter the name of the Dominant Color File (Without the \"_Dominant_Colors.txt\"): ")
+movie_name = input("Enter the name of the movie: ")
+
+# Use RegEx to get rid of any punctuation in movie_name
+movie_name = re.sub(r'[^\w\s]', '', movie_name)
+
+# Use RegEx to replace spaces with underscores in movie_name
+movie_name = re.sub(' ', '_', movie_name).lower()
+
+output_filename = movie_name + ".png"
+
+print(f"Look for \"{output_filename}\" in the Output folder")
+
 # Path to the text file
-file_path = "Dominant-Colors.txt"
+file_path = "../Dominant_Color_Files/" + file_name + "_Dominant_Colors.txt"
+print(file_path)
 
 # Read the RGB codes from the text file
 with open(file_path, "r") as file:
@@ -36,14 +50,11 @@ for i, rgb_code in enumerate(rgb_codes):
     percentage_done = (i + 1) / total_codes * 100
 
     # Check if the progress has changed by the threshold
-    while percentage_done <= 99.50:
-        if percentage_done % progress_threshold <= 1.0:
-            # Display the percentage completion
-            print(f"Progress: {(percentage_done*100):.2f}%")
-        
-    if percentage_done > 99.50:
+
+    if percentage_done % progress_threshold <= 1.0:
         # Display the percentage completion
-        print(f"Progress: Complete, please wait for image to be generated")
+        print(f"Progress: {(percentage_done*100):.2f}%")
+        
 
 # Remove the axes
 ax.axis('off')
@@ -60,8 +71,12 @@ ax.set_ylim(0, bar_height)
 # Adjust subplot parameters to eliminate whitespace
 plt.subplots_adjust(0, 0, 1, 1)
 
-# output_filename = "combined_bars.png"
-# plt.savefig(output_filename, dpi=300)
+# Save the plot to a file
+# Write the file to the output folder
+
+output_location = "../Output/" + output_filename
+
+plt.savefig(output_location, dpi=300)
 
 # Display the plot
 plt.show()
