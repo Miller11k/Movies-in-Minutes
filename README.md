@@ -1,5 +1,7 @@
 # Movies-in-Minutes
 
+[Instructions](#Instructions)
+
 # Instructions
 
 ## 1.) Install Necessary Libraries
@@ -78,7 +80,6 @@ python3 -mpip install --user matplotlib
     python3 generator_plotter.py
     ```
 
----
 ## 3.) Troubleshooting
 * To test generation of Dominant Color Text File (in _"Code"_ folder):
 
@@ -110,7 +111,6 @@ python3 -mpip install --user matplotlib
     
     **MUST already have a dominant colors text file to use**
 
----
 ## 4.) Output of Code
 After running _generator_plotter.py_, two new files will be produced:
     
@@ -122,4 +122,3 @@ After running _generator_plotter.py_, two new files will be produced:
     color of each frame. May need to be cropped after generation.
 
 **NOTE: _generator.py_ generates JUST the txt file, and _plotter.py_ generates JUST the png file.**
-
