@@ -78,6 +78,7 @@ python3 -mpip install --user matplotlib
     python3 generator_plotter.py
     ```
 
+---
 ## 3.) Troubleshooting
 * To test generation of Dominant Color Text File (in _"Code"_ folder):
 
@@ -109,6 +110,7 @@ python3 -mpip install --user matplotlib
     
     **MUST already have a dominant colors text file to use**
 
+---
 ## 4.) Output of Code
 After running _generator_plotter.py_, two new files will be produced:
     
