@@ -1,5 +1,3 @@
-# Movies-in-Minutes
-
 # Instructions
 
 ## 1.) Install Necessary Libraries
