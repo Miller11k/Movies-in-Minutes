@@ -1,7 +1,5 @@
 # Movies-in-Minutes
 
-[Instructions](#Instructions)
-
 # Instructions
 
 ## 1.) Install Necessary Libraries
