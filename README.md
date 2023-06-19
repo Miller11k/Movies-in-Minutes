@@ -110,11 +110,11 @@ python3 -mpip install --user matplotlib
 ## 4.) Output of Code
 After running _generator_plotter.py_, two new files will be produced:
     
-    1. A txt file - This will contain all the dominant 
+*  **A txt file -** This will contain all the dominant 
     colors of each frame (one frame per line on the file),
-    used to generate png file. Color contained as RGB code.
+    used to generate png file. ***Color contained as RGB code.***
     
-    2. A png file - This will be a plotted image of the dominant
-    color of each frame. May need to be cropped after generation.
+*  **A png file -** This will be a plotted image of the dominant
+    color of each frame. ***May need to be cropped after generation.***
 
 **NOTE: _generator.py_ generates JUST the txt file, and _plotter.py_ generates JUST the png file.**
